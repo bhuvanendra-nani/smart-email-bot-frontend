@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -50,13 +49,7 @@ export default function Dashboard() {
     }
   };
 
-  // -----------------------------
-  // STATES
-  // -----------------------------
-
-  if (loading) {
-    return <LoadingState />;
-  }
+  if (loading) return <LoadingState />;
 
   if (offline) {
     return <OfflineState onRetry={loadTasks} />;
@@ -73,34 +66,16 @@ export default function Dashboard() {
   }
 
   if (error) {
-    return (
-      <ErrorState
-        message={error}
-        onRetry={loadTasks}
-      />
-    );
+    return <ErrorState message={error} onRetry={loadTasks} />;
   }
 
-  if (!groups) {
-    return <EmptyState />;
-  }
+  if (!groups) return <EmptyState />;
 
-  // -----------------------------
-  // TASK COUNTS
-  // -----------------------------
-
-  const totalTasks = Object.values(groups)
-    .flat()
-    .length;
-
+  const totalTasks = Object.values(groups).flat().length;
   const internships = groups?.Internship?.length ?? 0;
   const placements = groups?.Placement?.length ?? 0;
   const tests = groups?.["Online Test"]?.length ?? 0;
   const academics = groups?.Academics?.length ?? 0;
-
-  // -----------------------------
-  // STATISTICS
-  // -----------------------------
 
   const stats = [
     {
@@ -112,33 +87,31 @@ export default function Dashboard() {
       title: "Internships",
       value: internships,
       icon: "💼",
+      path: "/internship",
     },
     {
       title: "Placements",
       value: placements,
       icon: "🎯",
+      path: "/placement",
     },
     {
       title: "Online Tests",
       value: tests,
       icon: "📝",
+      path: "/online-tests",
     },
     {
       title: "Academics",
       value: academics,
       icon: "📚",
+      path: "/academics",
     },
   ];
-
-  // -----------------------------
-  // UI
-  // -----------------------------
 
   return (
     <DashboardLayout>
       <div style={styles.container}>
-        {/* Header */}
-
         <div style={styles.header}>
           <h1 style={styles.title}>👋 Welcome Back</h1>
 
@@ -147,8 +120,6 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Statistics */}
-
         <div style={styles.statsContainer}>
           {stats.map((stat, index) => (
             <div key={index} style={styles.cardFull}>
@@ -156,6 +127,7 @@ export default function Dashboard() {
                 title={stat.title}
                 value={stat.value}
                 icon={stat.icon}
+                path={stat.path}
               />
             </div>
           ))}
