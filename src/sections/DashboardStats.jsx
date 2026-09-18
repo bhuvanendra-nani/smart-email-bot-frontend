@@ -1,0 +1,1 @@
+<DashboardStats totalTasks={totalTasks} />
